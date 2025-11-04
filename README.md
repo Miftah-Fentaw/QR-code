@@ -1,17 +1,25 @@
-# qrcode
+# 🔍 QR Code Scanner
 
-A new Flutter project.
+A sleek and lightning-fast **QR Code Scanner App** built with **Flutter** — scan, decode, and share instantly!
 
-## Getting Started
+<img src="assets/qr.gif" alt="App Mockup" width="300"/>
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+---
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## ✨ Features
+- 📱 **Instant Scan** – Reads QR codes in seconds  
+- 🖼️ **Camera & Gallery Support**  
+- 💾 **Scan History** – Keeps track of past scans  
+- 🌙 **Clean UI with Dark/Light Mode**
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# QR-code
+---
+
+## 🚀 Tech Stack
+- Flutter  
+- Dart  
+- Mobile Camera API  
+
+---
+
+> 🎯 *Simple. Fast. Reliable.*  
