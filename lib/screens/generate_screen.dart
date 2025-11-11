@@ -32,7 +32,7 @@ class _GenerateScreenState extends State<GenerateScreen> {
             padding: const EdgeInsets.symmetric(vertical: 100, horizontal: 20),
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                minHeight: MediaQuery.of(context).size.height, // fill screen
+                minHeight: MediaQuery.of(context).size.height, 
               ),
               child: IntrinsicHeight(
                 child: Column(
@@ -116,6 +116,7 @@ class _GenerateScreenState extends State<GenerateScreen> {
 
                     // QR Preview
                     AnimatedContainer(
+                      padding: const EdgeInsets.all(16) ,
                           duration: const Duration(milliseconds: 500),
                           height: 200,
                           width: 200,
