@@ -18,7 +18,6 @@ A sleek and lightning-fast **QR Code Scanner App** built with **Flutter** — sc
 ## 🚀 Tech Stack
 - Flutter  
 - Dart  
-- Mobile Camera API  
 
 ---
 
