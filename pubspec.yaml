@@ -15,9 +15,11 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter_animate: ^4.5.2
   lucide_icons: ^0.257.0
-  mobile_scanner: ^7.1.3
+  mobile_scanner: 
   pretty_qr_code: ^3.5.0
   icons_launcher: ^3.0.3
+  provider: 
+  intl: 
 
 icons_launcher:
   image_path: "assets/QR.png"
