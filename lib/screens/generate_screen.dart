@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
+import 'package:provider/provider.dart';
+import 'package:qrcode/utils/history_provider.dart';
 import 'package:qrcode/utils/utils.dart';
 
 class GenerateScreen extends StatefulWidget {
@@ -13,7 +15,7 @@ class GenerateScreen extends StatefulWidget {
 
 class _GenerateScreenState extends State<GenerateScreen> {
   final TextEditingController _controller = TextEditingController();
-  String? qrData; // stores user input data
+  String? qrData;
 
   @override
   Widget build(BuildContext context) {
@@ -29,94 +31,115 @@ class _GenerateScreenState extends State<GenerateScreen> {
         ),
         child: SafeArea(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(vertical: 100, horizontal: 20),
+            physics: const NeverScrollableScrollPhysics(),
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                minHeight: MediaQuery.of(context).size.height, 
+                minHeight: MediaQuery.of(context).size.height,
               ),
               child: IntrinsicHeight(
                 child: Column(
                   children: [
-                    // Header
-                    Column(
-                      children: [
-                        Container(
-                              width: 100,
-                              height: 100,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: feature.gradient,
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ),
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(20),
-                                ),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Colors.black26,
-                                    blurRadius: 8,
-                                    offset: Offset(0, 4),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.arrow_back,
+                            color: Colors.white,
+                            size: 24,
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 20,
+                        horizontal: 20,
+                      ),
+                      child: Column(
+                        children: [
+                          Container(
+                                width: 100,
+                                height: 100,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: feature.gradient,
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
                                   ),
-                                ],
-                              ),
-                              child: Icon(
-                                feature.icon,
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(20),
+                                  ),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Colors.black26,
+                                      blurRadius: 8,
+                                      offset: Offset(0, 4),
+                                    ),
+                                  ],
+                                ),
+                                child: Icon(
+                                  feature.icon,
+                                  color: Colors.white,
+                                  size: 34,
+                                ),
+                              )
+                              .animate()
+                              .fadeIn(duration: 600.ms)
+                              .slideY(begin: 0.2, end: 0),
+                          const SizedBox(height: 10),
+                          ShaderMask(
+                            shaderCallback: (bounds) => LinearGradient(
+                              colors: feature.gradient,
+                            ).createShader(bounds),
+                            child: Text(
+                              feature.title,
+                              style: const TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
                                 color: Colors.white,
-                                size: 34,
                               ),
-                            )
-                            .animate()
-                            .fadeIn(duration: 600.ms)
-                            .slideY(begin: 0.2, end: 0),
-                        const SizedBox(height: 10),
-                        ShaderMask(
-                          shaderCallback: (bounds) => LinearGradient(
-                            colors: feature.gradient,
-                          ).createShader(bounds),
-                          child: Text(
-                            feature.title,
-                            style: const TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 5),
-                        Text(
-                          feature.description,
-                          style: const TextStyle(
-                            color: Colors.black54,
-                            fontSize: 13,
+                          const SizedBox(height: 5),
+                          Text(
+                            feature.description,
+                            style: const TextStyle(
+                              color: Colors.black54,
+                              fontSize: 13,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 25),
-                      ],
+                        ],
+                      ),
                     ),
 
-                    // Input Field
-                    TextField(
-                          controller: _controller,
-                          maxLines: 3,
-                          decoration: InputDecoration(
-                            hintText: 'Enter text, URL, or contact info',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: TextField(
+                            controller: _controller,
+                            maxLines: 3,
+                            decoration: InputDecoration(
+                              hintText: 'Enter text, URL, or contact info',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              filled: true,
+                              fillColor: Colors.white.withOpacity(0.8),
                             ),
-                            filled: true,
-                            fillColor: Colors.white.withOpacity(0.8),
-                          ),
-                        )
-                        .animate()
-                        .fadeIn(duration: 600.ms)
-                        .slideY(begin: 0.3, end: 0),
+                          )
+                          .animate()
+                          .fadeIn(duration: 600.ms)
+                          .slideY(begin: 0.3, end: 0),
+                    ),
 
                     const SizedBox(height: 20),
 
-                    // QR Preview
                     AnimatedContainer(
-                      padding: const EdgeInsets.all(16) ,
+                          padding: const EdgeInsets.all(16),
                           duration: const Duration(milliseconds: 500),
                           height: 200,
                           width: 200,
@@ -153,10 +176,10 @@ class _GenerateScreenState extends State<GenerateScreen> {
                               : Center(
                                   child: PrettyQrView.data(
                                     data: qrData!,
+
                                     decoration: const PrettyQrDecoration(
                                       shape: PrettyQrSmoothSymbol(),
                                     ),
-                                    // size: 180,
                                   ),
                                 ),
                         )
@@ -166,7 +189,6 @@ class _GenerateScreenState extends State<GenerateScreen> {
 
                     const SizedBox(height: 20),
 
-                    // Generate Button
                     ElevatedButton(
                           onPressed: () {
                             setState(() {

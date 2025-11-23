@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:provider/provider.dart';
+import 'package:qrcode/utils/history_provider.dart';
 import 'package:qrcode/utils/utils.dart';
 import 'package:qrcode/screens/scan_screen.dart';
 import 'package:qrcode/screens/generate_screen.dart';
@@ -8,7 +10,12 @@ import 'package:qrcode/screens/history_screen.dart';
 import 'package:qrcode/screens/settings_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+  create: (_) => HistoryProvider(),
+  child: MyApp(),
+)
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -16,10 +23,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
-    );
+    return MaterialApp(debugShowCheckedModeBanner: false, home: MyHomePage());
   }
 }
 
@@ -43,15 +47,15 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         child: SafeArea(
           child: SingleChildScrollView(
+            physics: const NeverScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 20),
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                minHeight: MediaQuery.of(context).size.height, // fill screen
+                minHeight: MediaQuery.of(context).size.height,
               ),
               child: IntrinsicHeight(
                 child: Column(
                   children: [
-                    // ==== HEADER ====
                     Column(
                       children: [
                         Container(
@@ -106,7 +110,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       ],
                     ),
 
-                    // ==== FEATURE CARDS ====
                     Column(
                       children: List.generate(features.length, (index) {
                         final f = features[index];
@@ -202,7 +205,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
                     const SizedBox(height: 20),
 
-                    // ==== INFO SECTION ====
                     Container(
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
@@ -266,7 +268,7 @@ class _MyHomePageState extends State<MyHomePage> {
       case 'history':
         screen = const HistoryScreen();
         break;
-      case 'settings':
+      case 'more':
         screen = const SettingsScreen();
         break;
       default:

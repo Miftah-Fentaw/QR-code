@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:provider/provider.dart';
+import 'package:qrcode/utils/history_provider.dart';
 import 'package:qrcode/utils/utils.dart';
 import 'package:flutter/services.dart';
 
@@ -12,13 +14,12 @@ class ScanScreen extends StatefulWidget {
 }
 
 class _ScanScreenState extends State<ScanScreen> {
+  final MobileScannerController controller = MobileScannerController(
+    formats: [BarcodeFormat.qrCode],
+  );
 
-  void copyToClipboard(String text) {
-    Clipboard.setData(ClipboardData(text: text));
-  }
-
-  String? scannedResult;
-  final MobileScannerController _scannerController = MobileScannerController();
+  String? _lastScannedCode;
+  DateTime? _lastScannedTime;
 
   @override
   Widget build(BuildContext context) {
@@ -33,181 +34,96 @@ class _ScanScreenState extends State<ScanScreen> {
           ),
         ),
         child: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(vertical: 100, horizontal: 20),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight: MediaQuery.of(context).size.height, // fill screen
-              ),
-              child: IntrinsicHeight(
-                child: Column(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
                   children: [
-                    // Header
-                    Column(
-                      children: [
-                        Container(
-                              width: 100,
-                              height: 100,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: feature.gradient,
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ),
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(20),
-                                ),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Colors.black26,
-                                    blurRadius: 8,
-                                    offset: Offset(0, 4),
-                                  ),
-                                ],
-                              ),
-                              child: Icon(
-                                feature.icon,
-                                color: Colors.white,
-                                size: 34,
-                              ),
-                            )
-                            .animate()
-                            .fadeIn(duration: 600.ms)
-                            .slideY(begin: 0.2, end: 0),
-                        const SizedBox(height: 10),
-                        ShaderMask(
-                          shaderCallback: (bounds) => LinearGradient(
-                            colors: feature.gradient,
-                          ).createShader(bounds),
-                          child: Text(
-                            feature.title,
-                            style: const TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        Text(
-                          feature.description,
-                          style: const TextStyle(
-                            color: Colors.black54,
-                            fontSize: 13,
-                          ),
-                        ),
-                        const SizedBox(height: 25),
-                      ],
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back, color: Colors.white, size: 28),
+                      onPressed: () => Navigator.pop(context),
                     ),
-
-                    // QR Scanner View
-                    Container(
-                          height: 300,
-                          decoration: BoxDecoration(
-                            color: Colors.black12,
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(color: Colors.black26),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(16),
-                            child: MobileScanner(
-                              controller: _scannerController,
-                              onDetect: (capture) {
-                                final barcode = capture.barcodes.first;
-                                final String? code = barcode.rawValue;
-                                if (code != null && code != scannedResult) {
-                                  setState(() => scannedResult = code);
-                                  _scannerController.stop();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text('Scanned: $code')),
-                                  );
-                                }
-                              },
-                            ),
-                          ),
-                        )
-                        .animate()
-                        .fadeIn(duration: 600.ms)
-                        .slideY(begin: 0.3, end: 0),
-
-                    const SizedBox(height: 20),
-
-                    // Result Display
-                    if (scannedResult != null)
-                      Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.8),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Text(
-                                "Result: $scannedResult",
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(fontSize: 14),
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            IconButton(
-                              icon: const Icon(Icons.copy, color: Colors.white),
-                              onPressed: () {
-                                copyToClipboard(scannedResult!);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Copied to clipboard'),
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
+                    const SizedBox(width: 12),
+                    ShaderMask(
+                      shaderCallback: (bounds) => LinearGradient(colors: feature.gradient).createShader(bounds),
+                      child: const Text(
+                        'Scan QR Code',
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
                       ),
-
-                    const SizedBox(height: 20),
-
-                    // Buttons
-                    Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ElevatedButton.icon(
-                              onPressed: () {
-                                _scannerController.start();
-                                setState(() => scannedResult = null);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.indigo,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 20,
-                                  vertical: 15,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                              icon: const Icon(
-                                Icons.refresh,
-                                color: Colors.white,
-                              ),
-                              label: const Text(
-                                'Rescan',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
-                        .animate()
-                        .fadeIn(duration: 600.ms)
-                        .slideY(begin: 0.4, end: 0),
+                    ),
                   ],
                 ),
               ),
-            ),
+
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(24),
+                    child: MobileScanner(
+                      controller: controller,
+                      onDetect: (capture) {
+                        final barcode = capture.barcodes.firstOrNull;
+                        if (barcode?.rawValue == null) return;
+
+                        final String code = barcode!.rawValue!;
+
+                        final now = DateTime.now();
+                        if (_lastScannedCode == code &&
+                            _lastScannedTime != null &&
+                            now.difference(_lastScannedTime!).inSeconds < 3) return;
+
+                        _lastScannedCode = code;
+                        _lastScannedTime = now;
+
+                        Provider.of<HistoryProvider>(context, listen: false).addHistory(code);
+
+                        HapticFeedback.mediumImpact();
+                        controller.stop();
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => ResultScreen(result: code)),
+                        ).then((_) => controller.start());
+                      },
+                    ),
+                  ).animate()
+                      .fadeIn(duration: 600.ms)
+                      .scale(begin: const Offset(0.9, 0.9), end: const Offset(1.0, 1.0)),
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    FloatingActionButton(
+                      heroTag: "flip",
+                      backgroundColor: Colors.white.withOpacity(0.2),
+                      child: const Icon(Icons.flip_camera_ios, color: Colors.white, size: 28),
+                      onPressed: () => controller.switchCamera(),
+                    ),
+
+                    Container(
+                      width: 80,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(colors: feature.gradient),
+                        shape: BoxShape.circle,
+                        boxShadow: const [
+                          BoxShadow(color: Colors.black26, blurRadius: 20, offset: Offset(0, 10)),
+                        ],
+                      ),
+                      child: const Icon(Icons.qr_code_scanner, size: 40, color: Colors.white),
+                    ).animate().scale(delay: 300.ms, duration: 800.ms, curve: Curves.easeOutBack),
+
+                    const SizedBox(width: 56),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -216,7 +132,58 @@ class _ScanScreenState extends State<ScanScreen> {
 
   @override
   void dispose() {
-    _scannerController.dispose();
+    controller.dispose();
     super.dispose();
+  }
+}
+
+class ResultScreen extends StatelessWidget {
+  final String result;
+  const ResultScreen({super.key, required this.result});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(backgroundColor: Colors.transparent),
+      extendBodyBehindAppBar: true,
+      body: Container(
+        width: double.infinity,
+        decoration: const BoxDecoration(
+          image: DecorationImage(image: AssetImage("assets/bg.png"), fit: BoxFit.cover),
+        ),
+        child: SafeArea(
+          left: false,
+          right: false,
+          child: Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(colors: features.firstWhere((f) => f.id == 'scan').gradient),
+                    shape: BoxShape.rectangle,
+                    boxShadow: const [
+                      BoxShadow(color: Colors.black26, blurRadius: 20, offset: Offset(0, 10)),
+                    ],
+                  ),
+                  child: const Icon(Icons.qr_code_2, size: 200, color: Colors.white70)),
+                const SizedBox(height: 32),
+                SelectableText(result, style: const TextStyle(fontSize: 18, color: Colors.white), textAlign: TextAlign.center),
+                const SizedBox(height: 32),
+                ElevatedButton.icon(
+                  icon: const Icon(Icons.copy),
+                  label: const Text("Copy"),
+                  onPressed: () {
+                    Clipboard.setData(ClipboardData(text: result));
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Copied!")));
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

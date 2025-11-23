@@ -11,8 +11,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool _darkMode = false;
-  
+
 
   @override
   Widget build(BuildContext context) {
@@ -28,123 +27,93 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         child: SafeArea(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(vertical: 100, horizontal: 20),
+            physics: const NeverScrollableScrollPhysics(),
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                minHeight: MediaQuery.of(context).size.height, // fill screen
+                minHeight: MediaQuery.of(context).size.height,
               ),
               child: IntrinsicHeight(
                 child: Column(
                   children: [
-                    // Header
-                    Column(
-                      children: [
-                        Container(
-                              width: 100,
-                              height: 100,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: feature.gradient,
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ),
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(20),
-                                ),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Colors.black26,
-                                    blurRadius: 8,
-                                    offset: Offset(0, 4),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: IconButton(
+                          icon:  Icon(
+                            Icons.arrow_back,
+                            color: Colors.white,
+                            size: 24,
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                    ),
+                    Padding(
+
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                      child: Column(
+                        children: [
+                          Container(
+                                width: 100,
+                                height: 100,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: feature.gradient,
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
                                   ),
-                                ],
-                              ),
-                              child: Icon(
-                                feature.icon,
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(20),
+                                  ),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Colors.black26,
+                                      blurRadius: 8,
+                                      offset: Offset(0, 4),
+                                    ),
+                                  ],
+                                ),
+                                child: Icon(
+                                  feature.icon,
+                                  color: Colors.white,
+                                  size: 34,
+                                ),
+                              )
+                              .animate()
+                              .fadeIn(duration: 600.ms)
+                              .slideY(begin: 0.2, end: 0),
+                          const SizedBox(height: 10),
+                          ShaderMask(
+                            shaderCallback: (bounds) => LinearGradient(
+                              colors: feature.gradient,
+                            ).createShader(bounds),
+                            child: Text(
+                              feature.title,
+                              style: const TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
                                 color: Colors.white,
-                                size: 34,
                               ),
-                            )
-                            .animate()
-                            .fadeIn(duration: 600.ms)
-                            .slideY(begin: 0.2, end: 0),
-                        const SizedBox(height: 10),
-                        ShaderMask(
-                          shaderCallback: (bounds) => LinearGradient(
-                            colors: feature.gradient,
-                          ).createShader(bounds),
-                          child: Text(
-                            feature.title,
-                            style: const TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 5),
-                        Text(
-                          feature.description,
-                          style: const TextStyle(
-                            color: Colors.black54,
-                            fontSize: 13,
+                          const SizedBox(height: 5),
+                          Text(
+                            feature.description,
+                            style: const TextStyle(
+                              color: Colors.black54,
+                              fontSize: 13,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 25),
-                      ],
+                          const SizedBox(height: 25),
+                        ],
+                      ),
                     ),
 
-                    // Settings Options
                     Column(
                       children: [
-                        // Dark Mode Toggle
-                        Container(
-                              padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.8),
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(color: Colors.black12),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        LucideIcons.moon,
-                                        color: Colors.black54,
-                                      ),
-                                      const SizedBox(width: 12),
-                                      const Text(
-                                        'Dark Mode',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Switch(
-                                    value: _darkMode,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _darkMode = value;
-                                      });
-                                    },
-                                    activeColor: Colors.pinkAccent,
-                                  ),
-                                ],
-                              ),
-                            )
-                            .animate()
-                            .fadeIn(duration: 500.ms)
-                            .slideY(begin: 0.2, end: 0),
-
-                        const SizedBox(height: 10),
-
-                        // Auto Save Toggle
                         Container(
                               padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
@@ -183,7 +152,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                         const SizedBox(height: 10),
 
-                        // Theme Selector
                         Container(
                               padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
@@ -222,8 +190,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                         const SizedBox(height: 20),
 
-                        // Save Settings Button
-                        
+
                       ],
                     ),
                   ],
