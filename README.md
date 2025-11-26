@@ -2,19 +2,16 @@
 
 A sleek and lightning-fast **QR Code Scanner App** built with **Flutter** — scan, decode, and share instantly!
 
-<p align="center">
-  <img src="assets/screenshots/image1.jpg" alt="Screenshot 1" width="200"/>
-  <img src="assets/screenshots/image2.jpg" alt="Screenshot 2" width="200"/>
-  <img src="assets/screenshots/image3.jpg" alt="Screenshot 3" width="200"/>
-</p>
-<p align="center">
-  <img src="assets/screenshots/image4.jpg" alt="Screenshot 4" width="200"/>
-  <img src="assets/screenshots/image5.jpg" alt="Screenshot 5" width="200"/>
-  <img src="assets/screenshots/image6.jpg" alt="Screenshot 6" width="200"/>
-</p>
-<p align="left">
-<img src="assets/screenshots/image7.jpg" alt="Screenshot 1" width="200"/>
-</p>
+
+## 📷 Screenshots
+Click to view screenshots:  
+- [Screenshot](assets/screenshots/image1.jpg)  
+- [Screenshot](assets/screenshots/image2.jpg)  
+- [Screenshot](assets/screenshots/image3.jpg)  
+- [Screenshot](assets/screenshots/image4.jpg)  
+- [Screenshot](assets/screenshots/image5.jpg)  
+- [Screenshot](assets/screenshots/image6.jpg)  
+- [Screenshot](assets/screenshots/image7.jpg)
 
 ---
 
