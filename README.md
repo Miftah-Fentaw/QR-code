@@ -6,8 +6,6 @@ A sleek and lightning-fast **QR Code Scanner App** built with **Flutter** — sc
 ## 📷 Screenshots
 
 
-## Screenshots
-
 | ![Screen 1](assets/screenshots/image1.jpg) | ![Screen 2](assets/screenshots/image2.jpg) | ![Screen 3](assets/screenshots/image3.jpg) | ![Screen 4](assets/screenshots/image4.jpg) |
 |-------------------------------------------|-------------------------------------------|-------------------------------------------|-------------------------------------------|
 | ![Screen 5](assets/screenshots/image5.jpg) | ![Screen 6](assets/screenshots/image6.jpg) | ![Screen 7](assets/screenshots/image7.jpg) | 
