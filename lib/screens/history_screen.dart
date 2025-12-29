@@ -180,7 +180,7 @@ class HistoryCard extends StatelessWidget {
               gradient: LinearGradient(colors: feature.gradient),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: const Icon(LucideIcons.qrCode, color: Colors.white, size: 24),
+            child: const Icon(LucideIcons.history, color: Colors.white, size: 24),
           ),
           const SizedBox(width: 16),
           Expanded(

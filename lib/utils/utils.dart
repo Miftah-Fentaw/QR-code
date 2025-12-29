@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
@@ -23,6 +24,22 @@ final features = [
     bg: [Colors.white, Colors.white],
   ),
   Feature(
+    id: 'scan_bc',
+    title: 'Scan Bar Code',
+    description: 'Scan barcodes with your camera.',
+    icon: Icons.barcode_reader,
+    gradient: [Colors.pinkAccent, Colors.redAccent],
+    bg: [Colors.white, Colors.white],
+  ),
+  Feature(
+    id: 'generate_bc',
+    title: 'Generate Bar Code',
+    description: 'Create barcodes from text or numbers.',
+    icon: CupertinoIcons.barcode,
+    gradient: [Colors.pinkAccent, Colors.redAccent],
+    bg: [Colors.white, Colors.white],
+  ),
+  Feature(
     id: 'history',
     title: 'Scan History',
     description: 'View and manage your previously scanned codes.',
@@ -31,13 +48,14 @@ final features = [
     bg: [Colors.white, Colors.white],
   ),
   Feature(
-    id: 'more',
-    title: 'More',
-    description: 'get more apps and features.',
+    id: 'settings',
+    title: 'Setings',
+    description: 'Customize your app preferences and settings.',
     icon: LucideIcons.externalLink,
     gradient: [Colors.pinkAccent, Colors.redAccent],
     bg: [Colors.white, Colors.white],
   ),
+
 ];
 
 class Feature {

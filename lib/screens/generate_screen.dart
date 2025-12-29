@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
+import 'package:qrcode/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:qrcode/utils/history_provider.dart';
-import 'package:qrcode/utils/utils.dart';
+
 
 class GenerateScreen extends StatefulWidget {
   const GenerateScreen({super.key});
@@ -118,7 +119,7 @@ class _GenerateScreenState extends State<GenerateScreen> {
                     ),
 
                     Padding(
-                      padding: const EdgeInsets.all(10.0),
+                      padding:  EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
                       child: TextField(
                             controller: _controller,
                             maxLines: 3,
@@ -203,6 +204,9 @@ class _GenerateScreenState extends State<GenerateScreen> {
                                 ),
                               );
                             }
+                            if (qrData!.isNotEmpty) {
+  Provider.of<HistoryProvider>(context, listen: false).addHistory(qrData!);
+}
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.teal,
