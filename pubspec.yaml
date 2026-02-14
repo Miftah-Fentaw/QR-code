@@ -22,10 +22,15 @@ dependencies:
   intl: 
   barcode: ^2.2.9
   barcode_widget: ^2.0.4
-  url_launcher: 
+  url_launcher:
+  image_picker: ^1.0.7
+  share_plus: ^7.2.2
+  path_provider: ^2.1.2
+  screenshot: ^3.0.0
+  permission_handler: ^11.3.0 
 
 icons_launcher:
-  image_path: "assets/QR.png"
+  image_path: "assets/qr.png"
   platforms:
     android:
       enable: true
