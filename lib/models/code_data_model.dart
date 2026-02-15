@@ -1,4 +1,14 @@
-enum CodeType { qr, barcode }
+import 'package:hive/hive.dart';
+
+part 'code_data_model.g.dart';
+
+@HiveType(typeId: 0)
+enum CodeType {
+  @HiveField(0)
+  qr,
+  @HiveField(1)
+  barcode,
+}
 
 enum ContentType { url, phone, email, plainText }
 
