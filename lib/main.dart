@@ -2,10 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qrcode/screens/main_screen.dart';
 import 'package:qrcode/utils/history_provider.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:qrcode/models/code_data_model.dart';
+import 'package:qrcode/utils/history_model.dart';
+import 'package:easy_localization/easy_localization.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Hive
+  await Hive.initFlutter();
+
+  // Register Adapters
+  Hive.registerAdapter(CodeTypeAdapter());
+  Hive.registerAdapter(ScanHistoryItemAdapter());
+
+  // Initialize EasyLocalization
+  await EasyLocalization.ensureInitialized();
+
+  // Open the history box
+  await Hive.openBox<ScanHistoryItem>('history');
+
   runApp(
-    ChangeNotifierProvider(create: (_) => HistoryProvider(), child: MyApp()),
+    EasyLocalization(
+      supportedLocales: const [
+        Locale('en'),
+        Locale('am'),
+        Locale('es'),
+        Locale('de'),
+      ],
+      path: 'assets/translations',
+      fallbackLocale: const Locale('en'),
+      child:  ChangeNotifierProvider(
+          create: (_) => HistoryProvider(),
+          child: const MyApp(),
+        ),
+      ),
   );
 }
 
@@ -16,10 +48,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'QR Code Utility',
+      title: 'app_title'.tr(),
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
       theme: ThemeData(
-        fontFamily:
-            'Inter', // Assuming Inter or system default, user mentioned modern typography
+        fontFamily: 'Inter',
         scaffoldBackgroundColor: Colors.white,
         primaryColor: Colors.black,
         colorScheme: const ColorScheme.light(
