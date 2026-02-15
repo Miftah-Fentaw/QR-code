@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:barcode_widget/barcode_widget.dart';
@@ -11,7 +12,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qrcode/models/code_data_model.dart';
 import 'package:qrcode/utils/content_analyzer.dart';
-import 'package:qrcode/utils/utils.dart';
 
 class BarcodeDetailScreen extends StatefulWidget {
   final CodeData codeData;
@@ -27,8 +27,6 @@ class _BarcodeDetailScreenState extends State<BarcodeDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final feature = features.firstWhere((f) => f.id == 'scan');
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -40,26 +38,27 @@ class _BarcodeDetailScreenState extends State<BarcodeDetailScreen> {
                 // Header
                 Row(
                       children: [
-                        IconButton(
-                          icon: const Icon(
-                            Icons.arrow_back,
-                            color: Colors.white,
-                            size: 28,
+                        Container(
+                          margin: const EdgeInsets.only(right: 16),
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                        const SizedBox(width: 12),
-                        ShaderMask(
-                          shaderCallback: (bounds) => LinearGradient(
-                            colors: feature.gradient,
-                          ).createShader(bounds),
-                          child: const Text(
-                            'Barcode Details',
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.arrow_back,
                               color: Colors.white,
+                              size: 24,
                             ),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ),
+                        Text(
+                          'barcode_details'.tr(),
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
                           ),
                         ),
                       ],
@@ -78,11 +77,12 @@ class _BarcodeDetailScreenState extends State<BarcodeDetailScreen> {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(20),
-                          boxShadow: const [
+                          border: Border.all(color: Colors.black12),
+                          boxShadow: [
                             BoxShadow(
-                              color: Colors.black26,
+                              color: Colors.black.withOpacity(0.05),
                               blurRadius: 20,
-                              offset: Offset(0, 10),
+                              offset: const Offset(0, 10),
                             ),
                           ],
                         ),
@@ -92,7 +92,10 @@ class _BarcodeDetailScreenState extends State<BarcodeDetailScreen> {
                           width: 280,
                           height: 140,
                           drawText: true,
-                          style: const TextStyle(fontSize: 14),
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
                     )
@@ -107,9 +110,9 @@ class _BarcodeDetailScreenState extends State<BarcodeDetailScreen> {
                       width: double.infinity,
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.9),
+                        color: Colors.grey[50],
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Colors.white24),
+                        border: Border.all(color: Colors.black12),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,15 +121,15 @@ class _BarcodeDetailScreenState extends State<BarcodeDetailScreen> {
                             children: [
                               Icon(
                                 _getContentIcon(),
-                                color: feature.gradient.first,
+                                color: Colors.black,
                                 size: 20,
                               ),
                               const SizedBox(width: 8),
                               Text(
                                 _getContentTypeLabel(),
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 14,
-                                  color: feature.gradient.first,
+                                  color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -150,7 +153,7 @@ class _BarcodeDetailScreenState extends State<BarcodeDetailScreen> {
                 const SizedBox(height: 32),
 
                 // Action Buttons
-                _buildActionButtons(context, feature),
+                _buildActionButtons(context),
               ],
             ),
           ),
@@ -159,36 +162,39 @@ class _BarcodeDetailScreenState extends State<BarcodeDetailScreen> {
     );
   }
 
-  Widget _buildActionButtons(BuildContext context, feature) {
+  Widget _buildActionButtons(BuildContext context) {
+    final buttonWidth = MediaQuery.of(context).size.width * 0.42;
+    const networkingColor = Colors.indigo;
+
     return Column(
       children: [
         // Primary Actions Row
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
+            SizedBox(
+              width: buttonWidth,
               child:
                   _ActionButton(
                         icon: Icons.copy,
-                        label: 'Copy',
-                        gradient: feature.gradient,
+                        label: 'copy'.tr(),
                         onPressed: () => _copyToClipboard(context),
                       )
                       .animate()
                       .fadeIn(duration: 400.ms, delay: 300.ms)
                       .slideX(begin: -0.3, end: 0),
             ),
-            const SizedBox(width: 12),
-            Expanded(
+            SizedBox(
+              width: buttonWidth,
               child:
                   _ActionButton(
                         icon: Icons.share,
-                        label: 'Share',
-                        gradient: feature.gradient,
+                        label: 'share'.tr(),
                         onPressed: () => _shareContent(context),
                       )
                       .animate()
                       .fadeIn(duration: 400.ms, delay: 350.ms)
-                      .slideX(begin: -0.3, end: 0),
+                      .slideX(begin: 0.3, end: 0),
             ),
           ],
         ),
@@ -198,9 +204,9 @@ class _BarcodeDetailScreenState extends State<BarcodeDetailScreen> {
         // Conditional Actions based on content type
         if (widget.codeData.contentType == ContentType.url)
           _ActionButton(
-                icon: Icons.open_in_browser,
-                label: 'Open URL',
-                gradient: feature.gradient,
+                icon: Icons.language,
+                label: 'open_in_browser'.tr(),
+                iconColor: networkingColor,
                 onPressed: () => _openUrl(context),
               )
               .animate()
@@ -211,8 +217,7 @@ class _BarcodeDetailScreenState extends State<BarcodeDetailScreen> {
           const SizedBox(height: 12),
           _ActionButton(
                 icon: Icons.phone,
-                label: 'Call Phone Number',
-                gradient: feature.gradient,
+                label: 'call_number'.tr(),
                 onPressed: () => _callPhone(context),
               )
               .animate()
@@ -224,8 +229,8 @@ class _BarcodeDetailScreenState extends State<BarcodeDetailScreen> {
           const SizedBox(height: 12),
           _ActionButton(
                 icon: Icons.email,
-                label: 'Send Email',
-                gradient: feature.gradient,
+                label: 'send_email'.tr(),
+                iconColor: networkingColor,
                 onPressed: () => _sendEmail(context),
               )
               .animate()
@@ -237,26 +242,27 @@ class _BarcodeDetailScreenState extends State<BarcodeDetailScreen> {
 
         // Secondary Actions Row
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
+            SizedBox(
+              width: buttonWidth,
               child:
                   _ActionButton(
-                        icon: Icons.search,
-                        label: 'Search',
-                        gradient: feature.gradient,
+                        icon: Icons.language,
+                        label: 'Open in browser',
+                        iconColor: networkingColor,
                         onPressed: () => _searchGoogle(context),
                       )
                       .animate()
                       .fadeIn(duration: 400.ms, delay: 450.ms)
-                      .slideX(begin: 0.3, end: 0),
+                      .slideX(begin: -0.3, end: 0),
             ),
-            const SizedBox(width: 12),
-            Expanded(
+            SizedBox(
+              width: buttonWidth,
               child:
                   _ActionButton(
                         icon: Icons.save,
-                        label: 'Save Image',
-                        gradient: feature.gradient,
+                        label: 'save'.tr(),
                         onPressed: () => _saveImage(context),
                       )
                       .animate()
@@ -285,20 +291,20 @@ class _BarcodeDetailScreenState extends State<BarcodeDetailScreen> {
   String _getContentTypeLabel() {
     switch (widget.codeData.contentType) {
       case ContentType.url:
-        return 'URL';
+        return 'url'.tr();
       case ContentType.phone:
-        return 'Phone Number';
+        return 'phone_number'.tr();
       case ContentType.email:
-        return 'Email Address';
+        return 'email_address'.tr();
       case ContentType.plainText:
-        return 'Barcode Data';
+        return 'barcode_data'.tr();
     }
   }
 
   // Action handlers
   void _copyToClipboard(BuildContext context) {
     Clipboard.setData(ClipboardData(text: widget.codeData.content));
-    _showSnackBar(context, 'Copied to clipboard!');
+    _showSnackBar(context, 'copied'.tr());
   }
 
   void _shareContent(BuildContext context) async {
@@ -308,21 +314,21 @@ class _BarcodeDetailScreenState extends State<BarcodeDetailScreen> {
   void _openUrl(BuildContext context) async {
     final success = await ContentAnalyzer.launchURL(widget.codeData.content);
     if (!success && context.mounted) {
-      _showSnackBar(context, 'Failed to open URL', isError: true);
+      _showSnackBar(context, 'failed_open_url'.tr(), isError: true);
     }
   }
 
   void _callPhone(BuildContext context) async {
     final success = await ContentAnalyzer.launchPhone(widget.codeData.content);
     if (!success && context.mounted) {
-      _showSnackBar(context, 'Failed to open phone dialer', isError: true);
+      _showSnackBar(context, 'failed_open_dialer'.tr(), isError: true);
     }
   }
 
   void _sendEmail(BuildContext context) async {
     final success = await ContentAnalyzer.launchEmail(widget.codeData.content);
     if (!success && context.mounted) {
-      _showSnackBar(context, 'Failed to open email app', isError: true);
+      _showSnackBar(context, 'failed_open_email'.tr(), isError: true);
     }
   }
 
@@ -331,7 +337,7 @@ class _BarcodeDetailScreenState extends State<BarcodeDetailScreen> {
       widget.codeData.content,
     );
     if (!success && context.mounted) {
-      _showSnackBar(context, 'Failed to open browser', isError: true);
+      _showSnackBar(context, 'failed_open_browser'.tr(), isError: true);
     }
   }
 
@@ -342,7 +348,7 @@ class _BarcodeDetailScreenState extends State<BarcodeDetailScreen> {
         final status = await Permission.storage.request();
         if (!status.isGranted && !status.isLimited) {
           if (context.mounted) {
-            _showSnackBar(context, 'Storage permission denied', isError: true);
+            _showSnackBar(context, 'permission_denied'.tr(), isError: true);
           }
           return;
         }
@@ -352,7 +358,7 @@ class _BarcodeDetailScreenState extends State<BarcodeDetailScreen> {
       final image = await _screenshotController.capture();
       if (image == null) {
         if (context.mounted) {
-          _showSnackBar(context, 'Failed to capture image', isError: true);
+          _showSnackBar(context, 'failed_capture'.tr(), isError: true);
         }
         return;
       }
@@ -370,11 +376,7 @@ class _BarcodeDetailScreenState extends State<BarcodeDetailScreen> {
 
       if (directory == null) {
         if (context.mounted) {
-          _showSnackBar(
-            context,
-            'Failed to get storage directory',
-            isError: true,
-          );
+          _showSnackBar(context, 'failed_storage_dir'.tr(), isError: true);
         }
         return;
       }
@@ -386,11 +388,11 @@ class _BarcodeDetailScreenState extends State<BarcodeDetailScreen> {
       await file.writeAsBytes(image);
 
       if (context.mounted) {
-        _showSnackBar(context, 'Image saved to Downloads!');
+        _showSnackBar(context, 'image_saved'.tr());
       }
     } catch (e) {
       if (context.mounted) {
-        _showSnackBar(context, 'Failed to save image: $e', isError: true);
+        _showSnackBar(context, '${'failed_save'.tr()}: $e', isError: true);
       }
     }
   }
@@ -403,7 +405,7 @@ class _BarcodeDetailScreenState extends State<BarcodeDetailScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: isError ? Colors.red : Colors.green,
+        backgroundColor: isError ? Colors.red : Colors.black87,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
@@ -414,13 +416,13 @@ class _BarcodeDetailScreenState extends State<BarcodeDetailScreen> {
 class _ActionButton extends StatelessWidget {
   final IconData icon;
   final String label;
-  final List<Color> gradient;
+  final Color? iconColor;
   final VoidCallback onPressed;
 
   const _ActionButton({
     required this.icon,
     required this.label,
-    required this.gradient,
+    this.iconColor,
     required this.onPressed,
   });
 
@@ -429,27 +431,26 @@ class _ActionButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        backgroundColor: Colors.white.withOpacity(0.9),
-        shadowColor: Colors.black26,
-        elevation: 4,
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
+        elevation: 0,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ShaderMask(
-            shaderCallback: (bounds) =>
-                LinearGradient(colors: gradient).createShader(bounds),
-            child: Icon(icon, color: Colors.white, size: 22),
-          ),
-          const SizedBox(width: 10),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-              color: gradient.first,
+          Icon(icon, color: iconColor ?? Colors.white, size: 20),
+          const SizedBox(width: 8),
+          Flexible(
+            child: Text(
+              label,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart';
@@ -55,18 +56,18 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       .fadeIn(duration: 600.ms)
                       .slideY(begin: 0.2, end: 0),
                   const SizedBox(height: 16),
-                  const Text(
-                    'Scan History',
-                    style: TextStyle(
+                  Text(
+                    'history'.tr(),
+                    style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    'View your recent scans',
-                    style: TextStyle(color: Colors.grey, fontSize: 14),
+                  Text(
+                    'history_subtitle'.tr(),
+                    style: const TextStyle(color: Colors.grey, fontSize: 14),
                   ),
                   const SizedBox(height: 20),
                 ],
@@ -86,18 +87,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            'No history yet',
+                            'no_history'.tr(),
                             style: TextStyle(
                               fontSize: 18,
                               color: Colors.grey[600],
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Scanned QR codes will appear here',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey[400],
                             ),
                           ),
                         ],
@@ -106,14 +99,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   : LayoutBuilder(
                       builder: (context, constraints) {
                         if (constraints.maxWidth > 600) {
-                          // Tablet / Wide screen: Grid View
                           return GridView.builder(
                             padding: const EdgeInsets.all(20),
                             gridDelegate:
                                 const SliverGridDelegateWithMaxCrossAxisExtent(
                                   maxCrossAxisExtent: 400,
-                                  childAspectRatio:
-                                      3, // Adjust aspect ratio for card shape
+                                  childAspectRatio: 3,
                                   crossAxisSpacing: 20,
                                   mainAxisSpacing: 20,
                                 ),
@@ -125,12 +116,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                   .fadeIn(
                                     duration: 400.ms,
                                     delay: (50 * index).ms,
-                                  ) // Faster delay for grid
+                                  )
                                   .slideY(begin: 0.2, end: 0);
                             },
                           );
                         } else {
-                          // Mobile: List View
                           return ListView.builder(
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             itemCount: history.length,
@@ -154,12 +144,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: ElevatedButton(
-                  onPressed: () {
-                    historyProvider.clearHistory();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('History cleared')),
-                    );
-                  },
+                  onPressed: () =>
+                      _showClearAllDialog(context, historyProvider),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
                     foregroundColor: Colors.white,
@@ -171,14 +157,53 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text(
-                    'Clear All History',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  child: Text(
+                    'clear_all'.tr(),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.4, end: 0),
               ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _showClearAllDialog(BuildContext context, HistoryProvider provider) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Text('clear_all'.tr()),
+        content: Text('confirm_clear_all'.tr()),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              'cancel'.tr(),
+              style: const TextStyle(color: Colors.grey),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              provider.clearHistory();
+              Navigator.pop(context);
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text('history_cleared'.tr())));
+            },
+            child: Text(
+              'ok'.tr(),
+              style: const TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

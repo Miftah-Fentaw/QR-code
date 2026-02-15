@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:provider/provider.dart';
@@ -55,8 +56,8 @@ class _BarCodScannerScreenState extends State<BarCodScanner> {
                 children: [
                   const SizedBox(width: 12),
                   Text(
-                    'Scan Barcode',
-                    style: TextStyle(
+                    'scan_barcode'.tr(),
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -199,8 +200,8 @@ class _BarCodScannerScreenState extends State<BarCodScanner> {
       if (capture == null || capture.barcodes.isEmpty) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('No barcode found in the selected image'),
+            SnackBar(
+              content: Text('no_barcode_found'.tr()),
               backgroundColor: Colors.red,
               behavior: SnackBarBehavior.floating,
             ),
@@ -214,8 +215,8 @@ class _BarCodScannerScreenState extends State<BarCodScanner> {
       if (barcode.format == BarcodeFormat.qrCode) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('This is a QR code. Please use the QR Scanner.'),
+            SnackBar(
+              content: Text('not_a_qr_code'.tr()),
               backgroundColor: Colors.orange,
               behavior: SnackBarBehavior.floating,
             ),
@@ -227,8 +228,8 @@ class _BarCodScannerScreenState extends State<BarCodScanner> {
       if (barcode.rawValue == null) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Unable to read barcode from image'),
+            SnackBar(
+              content: Text('unable_to_read_barcode'.tr()),
               backgroundColor: Colors.red,
               behavior: SnackBarBehavior.floating,
             ),
@@ -263,7 +264,7 @@ class _BarCodScannerScreenState extends State<BarCodScanner> {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error scanning image: ${e.toString()}'),
+            content: Text('${'error_scanning'.tr()}: ${e.toString()}'),
             backgroundColor: Colors.red,
             behavior: SnackBarBehavior.floating,
           ),

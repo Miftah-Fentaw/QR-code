@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -10,7 +12,6 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,18 +48,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         .fadeIn(duration: 600.ms)
                         .slideY(begin: 0.2, end: 0),
                     const SizedBox(height: 16),
-                    const Text(
-                      'Settings',
-                      style: TextStyle(
+                    Text(
+                      'settings'.tr(),
+                      style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      'App preferences and info',
-                      style: TextStyle(color: Colors.grey, fontSize: 14),
                     ),
                     const SizedBox(height: 40),
                   ],
@@ -70,20 +66,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: Column(
                   children: [
                     _buildSettingsCard(
-                      icon: LucideIcons.star,
-                      title: 'Rate us',
-                      onTap: () {},
+                      icon: LucideIcons.languages,
+                      title: 'language'.tr(),
+                      onTap: () => _showLanguageDialog(context),
                       delay: 0,
                     ),
                     const SizedBox(height: 16),
                     _buildSettingsCard(
-                      icon: LucideIcons.externalLink,
-                      title: 'Other Apps',
-                      onTap: () {},
+                      icon: LucideIcons.shield,
+                      title: 'privacy_policy'.tr(),
+                      onTap: () => _launchPrivacyPolicy(),
                       delay: 1,
                     ),
                     const SizedBox(height: 16),
-                    // Add more settings as needed
                   ],
                 ),
               ),
@@ -92,6 +87,74 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
       ),
     );
+  }
+
+  void _showLanguageDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Text('select_language'.tr()),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              title: Text('english'.tr()),
+              onTap: () {
+                context.setLocale(const Locale('en'));
+                Navigator.pop(context);
+              },
+              trailing: context.locale == const Locale('en')
+                  ? const Icon(Icons.check, color: Colors.black)
+                  : null,
+            ),
+            ListTile(
+              title: Text('amharic'.tr()),
+              onTap: () {
+                context.setLocale(const Locale('am'));
+                Navigator.pop(context);
+              },
+              trailing: context.locale == const Locale('am')
+                  ? const Icon(Icons.check, color: Colors.black)
+                  : null,
+            ),
+            ListTile(
+              title: Text('spanish'.tr()),
+              onTap: () {
+                context.setLocale(const Locale('es'));
+                Navigator.pop(context);
+              },
+              trailing: context.locale == const Locale('es')
+                  ? const Icon(Icons.check, color: Colors.black)
+                  : null,
+            ),
+            ListTile(
+              title: Text('german'.tr()),
+              onTap: () {
+                context.setLocale(const Locale('de'));
+                Navigator.pop(context);
+              },
+              trailing: context.locale == const Locale('de')
+                  ? const Icon(Icons.check, color: Colors.black)
+                  : null,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _launchPrivacyPolicy() async {
+    final url = Uri.parse(
+      'https://miftah-fentaw.github.io/QR-code/privacy-policy.html',
+    );
+    if (!await launchUrl(url)) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Could not launch privacy policy')),
+        );
+      }
+    }
   }
 
   Widget _buildSettingsCard({

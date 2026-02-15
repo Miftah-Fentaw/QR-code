@@ -4,6 +4,7 @@ import 'package:qrcode/screens/barcode_screens/barcode_root_screen.dart';
 import 'package:qrcode/screens/history_screen.dart';
 import 'package:qrcode/screens/qr_code_screens/qr_root_screen.dart';
 import 'package:qrcode/screens/settings_screen.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -19,7 +20,7 @@ class _MainScreenState extends State<MainScreen> {
     const QrRootScreen(),
     const BarcodeRootScreen(),
     const HistoryScreen(),
-    SettingsScreen(),
+    const SettingsScreen(),
   ];
 
   @override
@@ -39,35 +40,38 @@ class _MainScreenState extends State<MainScreen> {
         child: BottomNavigationBar(
           currentIndex: _currentIndex,
           onTap: (index) => setState(() => _currentIndex = index),
-          items: const [
+          items: [
             BottomNavigationBarItem(
-              icon: Icon(LucideIcons.qrCode),
-              activeIcon: Icon(LucideIcons.qrCode, fontWeight: FontWeight.bold),
-              label: 'QR',
+              icon: const Icon(LucideIcons.qrCode),
+              activeIcon: const Icon(
+                LucideIcons.qrCode,
+                fontWeight: FontWeight.bold,
+              ),
+              label: 'qr_generator'.tr(),
             ),
             BottomNavigationBarItem(
-              icon: Icon(LucideIcons.barChartHorizontal),
-              activeIcon: Icon(
+              icon: const Icon(LucideIcons.barChartHorizontal),
+              activeIcon: const Icon(
                 LucideIcons.barChartHorizontal,
                 fontWeight: FontWeight.bold,
               ),
-              label: 'Barcode',
+              label: 'barcode_generator'.tr(),
             ),
             BottomNavigationBarItem(
-              icon: Icon(LucideIcons.history),
-              activeIcon: Icon(
+              icon: const Icon(LucideIcons.history),
+              activeIcon: const Icon(
                 LucideIcons.history,
                 fontWeight: FontWeight.bold,
               ),
-              label: 'History',
+              label: 'history'.tr(),
             ),
             BottomNavigationBarItem(
-              icon: Icon(LucideIcons.settings),
-              activeIcon: Icon(
+              icon: const Icon(LucideIcons.settings),
+              activeIcon: const Icon(
                 LucideIcons.settings,
                 fontWeight: FontWeight.bold,
               ),
-              label: 'Settings',
+              label: 'settings'.tr(),
             ),
           ],
         ),

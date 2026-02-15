@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:qrcode/screens/barcode_screens/bar_code_generator.dart';
 import 'package:qrcode/screens/barcode_screens/bar_cod_scanner.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class BarcodeRootScreen extends StatelessWidget {
   const BarcodeRootScreen({super.key});
 
@@ -11,14 +13,14 @@ class BarcodeRootScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Barcode'),
-          bottom: const TabBar(
+          title: Text('barcode'.tr()),
+          bottom: TabBar(
             indicatorColor: Colors.black,
             labelColor: Colors.black,
             unselectedLabelColor: Colors.grey,
             tabs: [
-              Tab(text: 'Scan'),
-              Tab(text: 'Generate'),
+              Tab(text: 'scan'.tr()),
+              Tab(text: 'generate'.tr()),
             ],
           ),
         ),
