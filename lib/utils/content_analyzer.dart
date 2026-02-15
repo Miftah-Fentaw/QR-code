@@ -1,6 +1,7 @@
 import 'package:url_launcher/url_launcher.dart';
 
 class ContentAnalyzer {
+
   /// Validates if a string is a valid URL
   static bool isValidUrl(String text) {
     try {
