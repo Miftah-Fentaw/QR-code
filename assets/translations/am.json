@@ -68,5 +68,13 @@
   "failed_capture": "ምስሉን ማንሳት አልተቻለም",
   "failed_storage_dir": "የማከማቻ ማውጫውን ማግኘት አልተቻለም",
   "image_saved": "ምስሉ በዳውንሎድስ (Downloads) ውስጥ ተቀምጧል!",
-  "failed_save": "ምስሉን ማስቀመጥ አልተቻለም"
+  "failed_save": "ምስሉን ማስቀመጥ አልተቻለም",
+  "scan_qr_or_barcode": "QR ወይም ባርኮድ ስካን ያድርጉ",
+  "scan_qr_or_Barcode": "QR ወይም ባርኮድ ስካን ያድርጉ",
+  "light": "መብራት",
+  "gallery": "ምስል / አልበም",
+  "preview_will_appear_here": "ቅድመ ዕይታ እዚህ ይታያል",
+  "view_details": "ዝርዝሮቹን አድቡ",
+  "no_code_found": "በምስሉ ውስጥ ምንም ኮድ አልተገኘም",
+  "error_scanning_image": "ምስሉን ስካን ባደገበት ስህተት ተከስቷል"
 }

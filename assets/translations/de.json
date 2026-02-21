@@ -68,5 +68,13 @@
     "failed_capture": "Bildaufnahme fehlgeschlagen",
     "failed_storage_dir": "Speicherverzeichnis konnte nicht ermittelt werden",
     "image_saved": "Bild unter Downloads gespeichert!",
-    "failed_save": "Bild konnte nicht gespeichert werden"
+    "failed_save": "Bild konnte nicht gespeichert werden",
+    "scan_qr_or_barcode": "QR oder Barcode scannen",
+    "scan_qr_or_Barcode": "QR oder Barcode scannen",
+    "light": "Licht",
+    "gallery": "Galerie",
+    "preview_will_appear_here": "Vorschau erscheint hier",
+    "view_details": "Details anzeigen",
+    "no_code_found": "Kein Code im Bild gefunden",
+    "error_scanning_image": "Fehler beim Scannen des Bildes"
 }

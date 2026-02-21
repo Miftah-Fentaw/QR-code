@@ -68,5 +68,13 @@
   "failed_capture": "Failed to capture image",
   "failed_storage_dir": "Failed to get storage directory",
   "image_saved": "Image saved to Downloads!",
-  "failed_save": "Failed to save image"
+  "failed_save": "Failed to save image",
+  "scan_qr_or_barcode": "Scan QR or Barcode",
+  "scan_qr_or_Barcode": "Scan QR or Barcode",
+  "light": "Light",
+  "gallery": "Gallery",
+  "preview_will_appear_here": "Preview will appear here",
+  "view_details": "View Details",
+  "no_code_found": "No code found in image",
+  "error_scanning_image": "Error scanning image"
 }

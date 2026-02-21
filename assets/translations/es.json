@@ -68,5 +68,13 @@
     "failed_capture": "Error al capturar la imagen",
     "failed_storage_dir": "Error al obtener el directorio de almacenamiento",
     "image_saved": "¡Imagen guardada en Descargas!",
-    "failed_save": "Error al guardar la imagen"
+    "failed_save": "Error al guardar la imagen",
+    "scan_qr_or_barcode": "Escanear QR o código de barras",
+    "scan_qr_or_Barcode": "Escanear QR o código de barras",
+    "light": "Luz",
+    "gallery": "Galería",
+    "preview_will_appear_here": "La vista previa aparecerá aquí",
+    "view_details": "Ver detalles",
+    "no_code_found": "No se encontró ningún código en la imagen",
+    "error_scanning_image": "Error al escanear la imagen"
 }
