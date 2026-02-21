@@ -24,7 +24,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     final history = historyProvider.history;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[200],
       body: SafeArea(
         child: Column(
           children: [
@@ -36,19 +36,19 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: Colors.black,
+                          color: Colors.white,
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
+                              color: Colors.black.withOpacity(0.08),
                               blurRadius: 10,
-                              offset: const Offset(0, 5),
+                              offset: const Offset(0, 4),
                             ),
                           ],
                         ),
                         child: const Icon(
                           LucideIcons.history,
-                          color: Colors.white,
+                          color: Colors.black87,
                           size: 34,
                         ),
                       )
@@ -61,13 +61,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: Colors.black87,
                     ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'history_subtitle'.tr(),
-                    style: const TextStyle(color: Colors.grey, fontSize: 14),
+                    style: TextStyle(color: Colors.grey[600], fontSize: 14),
                   ),
                   const SizedBox(height: 20),
                 ],
@@ -83,59 +83,28 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           Icon(
                             LucideIcons.history,
                             size: 64,
-                            color: Colors.grey[300],
+                            color: Colors.grey[400],
                           ),
                           const SizedBox(height: 16),
                           Text(
                             'no_history'.tr(),
                             style: TextStyle(
                               fontSize: 18,
-                              color: Colors.grey[600],
+                              color: Colors.grey[500],
                             ),
                           ),
                         ],
                       ),
                     )
-                  : LayoutBuilder(
-                      builder: (context, constraints) {
-                        if (constraints.maxWidth > 600) {
-                          return GridView.builder(
-                            padding: const EdgeInsets.all(20),
-                            gridDelegate:
-                                const SliverGridDelegateWithMaxCrossAxisExtent(
-                                  maxCrossAxisExtent: 400,
-                                  childAspectRatio: 3,
-                                  crossAxisSpacing: 20,
-                                  mainAxisSpacing: 20,
-                                ),
-                            itemCount: history.length,
-                            itemBuilder: (context, index) {
-                              final item = history[index];
-                              return HistoryCard(item: item)
-                                  .animate()
-                                  .fadeIn(
-                                    duration: 400.ms,
-                                    delay: (50 * index).ms,
-                                  )
-                                  .slideY(begin: 0.2, end: 0);
-                            },
-                          );
-                        } else {
-                          return ListView.builder(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            itemCount: history.length,
-                            itemBuilder: (context, index) {
-                              final item = history[index];
-                              return HistoryCard(item: item)
-                                  .animate()
-                                  .fadeIn(
-                                    duration: 400.ms,
-                                    delay: (100 * index).ms,
-                                  )
-                                  .slideY(begin: 0.2, end: 0);
-                            },
-                          );
-                        }
+                  : ListView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      itemCount: history.length,
+                      itemBuilder: (context, index) {
+                        final item = history[index];
+                        return HistoryCard(item: item)
+                            .animate()
+                            .fadeIn(duration: 400.ms, delay: (100 * index).ms)
+                            .slideY(begin: 0.2, end: 0);
                       },
                     ),
             ),
@@ -147,15 +116,16 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   onPressed: () =>
                       _showClearAllDialog(context, historyProvider),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
+                    backgroundColor:  Colors.black,
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 40,
                       vertical: 16,
                     ),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(16),
                     ),
+                    elevation: 0,
                   ),
                   child: Text(
                     'clear_all'.tr(),
@@ -184,7 +154,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             onPressed: () => Navigator.pop(context),
             child: Text(
               'cancel'.tr(),
-              style: const TextStyle(color: Colors.grey),
+              style: TextStyle(color: Colors.grey[600]),
             ),
           ),
           TextButton(
@@ -195,10 +165,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 context,
               ).showSnackBar(SnackBar(content: Text('history_cleared'.tr())));
             },
-            child: Text(
-              'ok'.tr(),
-              style: const TextStyle(
-                color: Colors.black,
+            child: const Text(
+              'OK',
+              style: TextStyle(
+                color: Color(0xFF007BFF),
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -250,18 +220,18 @@ class HistoryCard extends StatelessWidget {
           );
         }
       },
+      borderRadius: BorderRadius.circular(16),
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.9),
+          color: Colors.white,
           borderRadius: const BorderRadius.all(Radius.circular(16)),
-          border: Border.all(color: Colors.black12),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withOpacity(0.06),
               blurRadius: 8,
-              offset: const Offset(0, 4),
+              offset: const Offset(0, 3),
             ),
           ],
         ),
@@ -271,12 +241,12 @@ class HistoryCard extends StatelessWidget {
               width: 50,
               height: 50,
               decoration: BoxDecoration(
-                color: Colors.black, // B&W
+                color: Colors.grey[100],
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: const Icon(
+              child: Icon(
                 LucideIcons.history,
-                color: Colors.white,
+                color: Colors.grey[600],
                 size: 24,
               ),
             ),
@@ -290,6 +260,7 @@ class HistoryCard extends StatelessWidget {
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 15,
+                      color: Colors.black87,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -297,12 +268,12 @@ class HistoryCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     formattedDate,
-                    style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                    style: TextStyle(color: Colors.grey[500], fontSize: 12),
                   ),
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right, color: Colors.grey),
+            Icon(Icons.chevron_right, color: Colors.grey[400]),
           ],
         ),
       ),

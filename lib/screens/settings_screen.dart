@@ -15,11 +15,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[200],
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
+              // Header
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
@@ -28,19 +29,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     Container(
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: Colors.black,
+                            color: Colors.white,
                             shape: BoxShape.circle,
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
+                                color: Colors.black.withOpacity(0.08),
                                 blurRadius: 10,
-                                offset: const Offset(0, 5),
+                                offset: const Offset(0, 4),
                               ),
                             ],
                           ),
                           child: const Icon(
                             LucideIcons.settings,
-                            color: Colors.white,
+                            color: Colors.black87,
                             size: 34,
                           ),
                         )
@@ -53,7 +54,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                        color: Colors.black87,
                       ),
                     ),
                     const SizedBox(height: 40),
@@ -61,6 +62,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
 
+              // Menu Cards
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
@@ -71,14 +73,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       onTap: () => _showLanguageDialog(context),
                       delay: 0,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 12),
                     _buildSettingsCard(
                       icon: LucideIcons.shield,
                       title: 'privacy_policy'.tr(),
                       onTap: () => _launchPrivacyPolicy(),
                       delay: 1,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 12),
                   ],
                 ),
               ),
@@ -98,55 +100,33 @@ class _SettingsScreenState extends State<SettingsScreen> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ListTile(
-              title: Text('english'.tr()),
-              onTap: () {
-                context.setLocale(const Locale('en'));
-                Navigator.pop(context);
-              },
-              trailing: context.locale == const Locale('en')
-                  ? const Icon(Icons.check, color: Colors.black)
-                  : null,
-            ),
-            ListTile(
-              title: Text('amharic'.tr()),
-              onTap: () {
-                context.setLocale(const Locale('am'));
-                Navigator.pop(context);
-              },
-              trailing: context.locale == const Locale('am')
-                  ? const Icon(Icons.check, color: Colors.black)
-                  : null,
-            ),
-            ListTile(
-              title: Text('spanish'.tr()),
-              onTap: () {
-                context.setLocale(const Locale('es'));
-                Navigator.pop(context);
-              },
-              trailing: context.locale == const Locale('es')
-                  ? const Icon(Icons.check, color: Colors.black)
-                  : null,
-            ),
-            ListTile(
-              title: Text('german'.tr()),
-              onTap: () {
-                context.setLocale(const Locale('de'));
-                Navigator.pop(context);
-              },
-              trailing: context.locale == const Locale('de')
-                  ? const Icon(Icons.check, color: Colors.black)
-                  : null,
-            ),
+            _buildLanguageTile(context, 'english'.tr(), const Locale('en')),
+            _buildLanguageTile(context, 'amharic'.tr(), const Locale('am')),
+            _buildLanguageTile(context, 'spanish'.tr(), const Locale('es')),
+            _buildLanguageTile(context, 'german'.tr(), const Locale('de')),
           ],
         ),
       ),
     );
   }
 
+  Widget _buildLanguageTile(BuildContext context, String label, Locale locale) {
+    final isSelected = context.locale == locale;
+    return ListTile(
+      title: Text(label),
+      onTap: () {
+        context.setLocale(locale);
+        Navigator.pop(context);
+      },
+      trailing: isSelected
+          ? const Icon(Icons.check, color: Color(0xFF007BFF))
+          : null,
+    );
+  }
+
   Future<void> _launchPrivacyPolicy() async {
     final url = Uri.parse(
-      'https://miftah-fentaw.github.io/QR-code/privacy-policy.html',
+      'https://scanner-application.vercel.app/privacy-policy.html',
     );
     if (!await launchUrl(url)) {
       if (mounted) {
@@ -167,12 +147,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.grey.withOpacity(0.1)),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
+                color: Colors.black.withOpacity(0.06),
+                blurRadius: 8,
+                offset: const Offset(0, 3),
               ),
             ],
           ),
@@ -185,22 +164,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
             leading: Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: Colors.grey[50],
+                color: Colors.grey[100],
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Icon(icon, color: Colors.black, size: 22),
+              child: Icon(icon, color: Colors.black87, size: 22),
             ),
             title: Text(
               title,
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: Colors.black,
+                color: Colors.black87,
               ),
             ),
-            trailing: const Icon(
+            trailing: Icon(
               LucideIcons.chevronRight,
-              color: Colors.grey,
+              color: Colors.grey[400],
               size: 20,
             ),
           ),

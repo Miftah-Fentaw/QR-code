@@ -250,7 +250,7 @@ class _BarcodeDetailScreenState extends State<BarcodeDetailScreen> {
                   _ActionButton(
                         icon: Icons.language,
                         label: 'Open in browser',
-                        iconColor: networkingColor,
+                        iconColor: Colors.white,
                         onPressed: () => _searchGoogle(context),
                       )
                       .animate()

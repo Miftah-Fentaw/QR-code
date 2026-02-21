@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:qrcode/screens/barcode_screens/barcode_root_screen.dart';
 import 'package:qrcode/screens/history_screen.dart';
-import 'package:qrcode/screens/qr_code_screens/qr_root_screen.dart';
 import 'package:qrcode/screens/settings_screen.dart';
+import 'package:qrcode/screens/unified_scan_screen.dart';
+import 'package:qrcode/screens/unified_generate_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class MainScreen extends StatefulWidget {
@@ -17,8 +17,8 @@ class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
   final List<Widget> _screens = [
-    const QrRootScreen(),
-    const BarcodeRootScreen(),
+    const UnifiedScanScreen(),
+    const UnifiedGenerateScreen(),
     const HistoryScreen(),
     const SettingsScreen(),
   ];
@@ -40,22 +40,26 @@ class _MainScreenState extends State<MainScreen> {
         child: BottomNavigationBar(
           currentIndex: _currentIndex,
           onTap: (index) => setState(() => _currentIndex = index),
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: Colors.black,
+          unselectedItemColor: Colors.grey,
+          showUnselectedLabels: true,
           items: [
             BottomNavigationBarItem(
-              icon: const Icon(LucideIcons.qrCode),
+              icon: const Icon(LucideIcons.scanLine),
               activeIcon: const Icon(
-                LucideIcons.qrCode,
+                LucideIcons.scanLine,
                 fontWeight: FontWeight.bold,
               ),
-              label: 'qr_generator'.tr(),
+              label: 'scan'.tr(),
             ),
             BottomNavigationBarItem(
-              icon: const Icon(LucideIcons.barChartHorizontal),
+              icon: const Icon(LucideIcons.loader2),
               activeIcon: const Icon(
-                LucideIcons.barChartHorizontal,
+                LucideIcons.loader,
                 fontWeight: FontWeight.bold,
               ),
-              label: 'barcode_generator'.tr(),
+              label: 'generate'.tr(),
             ),
             BottomNavigationBarItem(
               icon: const Icon(LucideIcons.history),

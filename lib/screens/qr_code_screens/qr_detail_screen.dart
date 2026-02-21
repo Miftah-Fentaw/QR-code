@@ -241,9 +241,9 @@ class _QRDetailScreenState extends State<QRDetailScreen> {
               width: buttonWidth,
               child:
                   _ActionButton(
-                        icon: Icons.search,
-                        label: 'search'.tr(),
-                        iconColor: networkingColor,
+                        icon: Icons.language,
+                        label: 'open_in_browser'.tr(),
+                        iconColor: Colors.white,
                         onPressed: () => _searchGoogle(context),
                       )
                       .animate()
