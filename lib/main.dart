@@ -7,6 +7,8 @@ import 'package:qrcode/models/code_data_model.dart';
 import 'package:qrcode/utils/history_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 
+
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -23,22 +25,22 @@ void main() async {
   // Open the history box
   await Hive.openBox<ScanHistoryItem>('history');
 
-  runApp(
-    EasyLocalization(
-      supportedLocales: const [
-        Locale('en'),
-        Locale('am'),
-        Locale('es'),
-        Locale('de'),
-      ],
-      path: 'assets/translations',
-      fallbackLocale: const Locale('en'),
-      child:  ChangeNotifierProvider(
-          create: (_) => HistoryProvider(),
-          child: const MyApp(),
-        ),
-      ),
-  );
+runApp(
+  EasyLocalization(
+    supportedLocales: const [
+      Locale('en'),
+      Locale('am'),
+      Locale('es'),
+      Locale('de'),
+    ],
+    path: 'assets/translations',
+    fallbackLocale: const Locale('en'),
+    child: ChangeNotifierProvider(
+      create: (_) => HistoryProvider(),
+      child: MyApp(),
+    ),
+  ),
+);
 }
 
 class MyApp extends StatelessWidget {
